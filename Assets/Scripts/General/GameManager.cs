@@ -12,13 +12,23 @@ namespace General
         [SerializeField] private Player playerPrefab;
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
+        private static GameManager _instance;
+        public static GameManager Instance => _instance;
+
+        public Player Player { get; private set; }
+
+        private void Awake()
+        {
+            _instance = this;
+        }
+        
         private void Start()
         {
             Level firstLevelPrefab = levelPrefabs[0];
             Level firstLevel = Instantiate(firstLevelPrefab);
 
-            Player player = Instantiate(playerPrefab);
-            Transform playerTransform = player.transform;
+            Player = Instantiate(playerPrefab);
+            Transform playerTransform = Player.transform;
             playerTransform.position = firstLevel.PlayerSpawn.position;
 
             virtualCamera.Follow = playerTransform;
