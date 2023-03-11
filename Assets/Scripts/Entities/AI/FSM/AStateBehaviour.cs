@@ -8,7 +8,11 @@ namespace Entities.AI.FSM
         [SerializeField] protected List<AStateAction> actions;
         [SerializeField] protected List<AStateTransition> transitions;
 
-        public abstract void OnStateEnter(StateMachine stateMachine);
+        public virtual void OnStateEnter(StateMachine stateMachine)
+        {
+            foreach (AStateAction action in actions)
+                action.OnActionEnter(stateMachine);
+        }
         public abstract void OnStateExit(StateMachine stateMachine);
 
         public virtual void OnUpdate(StateMachine stateMachine)

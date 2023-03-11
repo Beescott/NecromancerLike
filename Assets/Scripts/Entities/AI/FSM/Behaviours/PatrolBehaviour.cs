@@ -11,8 +11,9 @@ namespace Entities.AI.FSM.Behaviours
 
         public override void OnStateEnter(StateMachine stateMachine)
         {
-            // stateMachine.TargetEnemy.NavMeshAgent.speed = patrolSpeed;
-            // stateMachine.TargetEnemy.NavMeshAgent.stoppingDistance = StoppingDistance;
+            base.OnStateEnter(stateMachine);
+            stateMachine.TargetEnemy.Speed = patrolSpeed;
+            stateMachine.TargetEnemy.StoppingDistance = StoppingDistance;
         }
 
         public override void OnStateExit(StateMachine stateMachine)

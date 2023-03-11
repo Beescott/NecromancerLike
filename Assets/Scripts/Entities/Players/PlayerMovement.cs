@@ -1,6 +1,3 @@
-using System;
-using System.Reflection.Emit;
-using General;
 using UnityEngine;
 
 namespace Entities.Players
@@ -12,9 +9,9 @@ namespace Entities.Players
         [SerializeField] private float moveSpeed = 5f; // speed of movement
         [SerializeField] private float wallSlideSpeed = 1f; // speed of sliding along a wall
         [SerializeField] private float wallSlideDuration = 0.2f; 
-    
+        
         [Header("Physics")]
-        [SerializeField] private Collider2D collider2D;
+        [SerializeField] private Collider2D playerCollider;
         [SerializeField] private LayerMask wallLayerMask;
     
         private Vector3 _transformMovement = Vector3.zero;
@@ -25,7 +22,7 @@ namespace Entities.Players
 
         private void OnValidate()
         {
-            collider2D ??= GetComponent<Collider2D>();
+            playerCollider ??= GetComponent<Collider2D>();
         }
 
         void Update()
@@ -70,10 +67,10 @@ namespace Entities.Players
             Vector2 newPosition = (Vector2)transform.position + movement;
             newPosition += movement.normalized * 0.01f;
 
-            int size = Physics2D.OverlapBoxNonAlloc(newPosition + collider2D.offset, collider2D.bounds.size, 0f, _colliderArray, wallLayerMask);
+            int size = Physics2D.OverlapBoxNonAlloc(newPosition + playerCollider.offset, playerCollider.bounds.size, 0f, _colliderArray, wallLayerMask);
             for (int i = 0; i < size; i++)
             {
-                if (_colliderArray[i] != collider2D)
+                if (_colliderArray[i] != playerCollider)
                     return true;
             }
             return false;

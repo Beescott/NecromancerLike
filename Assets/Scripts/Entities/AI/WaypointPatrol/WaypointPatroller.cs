@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AI.WaypointPatrol
+namespace Entities.AI.WaypointPatrol
 {
     public class WaypointPatroller : MonoBehaviour
     {
@@ -21,6 +20,8 @@ namespace AI.WaypointPatrol
         private float _lastStop;
 
         private bool _waitForStop;
+
+        public List<Transform> Waypoints => waypoints;
 
         public void Initialize()
         {

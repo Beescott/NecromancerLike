@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Cinemachine;
 using Entities.Players;
 using Levels;
@@ -32,6 +33,12 @@ namespace General
             playerTransform.position = firstLevel.PlayerSpawn.position;
 
             virtualCamera.Follow = playerTransform;
+            StartCoroutine(StartLevel(firstLevel));
+        }
+
+        private IEnumerator StartLevel(Level level)
+        {
+            yield return level.OnGameTick();
         }
     }
 }

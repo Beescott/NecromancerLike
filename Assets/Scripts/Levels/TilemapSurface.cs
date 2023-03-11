@@ -11,18 +11,18 @@ namespace Levels
         [SerializeField] private Tilemap grounds;
 
         [SerializeField] private List<Tile> allTiles;
-        private Tile[,] _tiles;
+        public Tile[,] Tiles { get; private set; }
 
         [ContextMenu("Generate Tiles")]
         public void GenerateTiles()
         {
-            _tiles = null;
+            Tiles = null;
             allTiles.Clear();
 
-            _tiles = GetTilesFromTilemap(grounds);
+            Tiles = GetTilesFromTilemap(grounds);
             Tile[,] wallTiles = GetTilesFromTilemap(walls, true);
 
-            foreach (Tile tile in _tiles)
+            foreach (Tile tile in Tiles)
                 allTiles.Add(tile);
 
             foreach (Tile wallTile in wallTiles)
@@ -52,7 +52,7 @@ namespace Levels
                     if (invertIsWalkable) isWalkable = !isWalkable;
                     
                     Vector2 gridPosition = new Vector2(x, y);
-                    Vector3 worldPosition = tilemap.GetCellCenterWorld(new Vector3Int(x, y));
+                    Vector3 worldPosition = tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0));
                     worldPosition += tilemap.origin;
                     resultMap[x, y] = new Tile(gridPosition, worldPosition, isWalkable);
                 }
@@ -61,9 +61,15 @@ namespace Levels
             return resultMap;
         }
 
+        public Tile GetTileFromWorld(Vector3 worldPosition)
+        {
+            Vector3Int gridPosition = grounds.WorldToCell(worldPosition - grounds.origin);
+            return Tiles[gridPosition.x, gridPosition.y];
+        }
+        
         private void OnDrawGizmosSelected()
         {
-            if (_tiles == null || _tiles.GetLength(0) == 0 || _tiles.GetLength(1) == 0)
+            if (Tiles == null || Tiles.GetLength(0) == 0 || Tiles.GetLength(1) == 0)
                 return;
             
             foreach (Tile tile in allTiles)
